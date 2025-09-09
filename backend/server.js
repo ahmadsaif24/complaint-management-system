@@ -8,6 +8,7 @@ dotenv.config();
 
 const categoryRoutes = require('./routes/categoryRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
+const User = require('./models/User');
 const app = express();
 
 app.use(cors());
@@ -45,6 +46,7 @@ async function ensureFirstAdmin() {
 // Export the app object for testing
 if (require.main === module) {
     connectDB();
+    ensureFirstAdmin();
     // If the file is run directly, start the server
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
