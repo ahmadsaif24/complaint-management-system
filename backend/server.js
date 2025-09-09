@@ -8,6 +8,7 @@ dotenv.config();
 
 const categoryRoutes = require('./routes/categoryRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
+const User = require('./models/User');
 const app = express();
 
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/categories', categoryRoutes);
 app.use('/api/complaints', complaintRoutes);
+
 //app.use('/api/tasks', require('./routes/taskRoutes'));
 
 async function ensureFirstAdmin() {
@@ -28,6 +30,7 @@ async function ensureFirstAdmin() {
       console.log(`[admin-seed] Skipped: admin user already exists (${existing.email})`);
       return;
     }
+    
 
     // Create the *first* admin
     await User.create({
@@ -45,6 +48,7 @@ async function ensureFirstAdmin() {
 // Export the app object for testing
 if (require.main === module) {
     connectDB();
+    ensureFirstAdmin();
     // If the file is run directly, start the server
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
